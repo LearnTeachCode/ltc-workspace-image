@@ -3,7 +3,7 @@ version: "3.7"
 services:
   kasm:
     build: .
-    image: ghcr.io/capsulecorplab/kasm-ltc-workspace:main
+    image: ghcr.io/capsulecorplab/ltc-workspace-image:main
     ports:
       - "6901:6901"
     environment:
