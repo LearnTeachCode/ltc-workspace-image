@@ -6,7 +6,9 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the develop branch
   push:
-    branches: [ main ]
+    branches:
+      - 'main'
+      - 'dev'
     paths-ignore:
       - 'devResources/**'
       - 'docker-compose.yml'
@@ -14,7 +16,9 @@ on:
       - 'LICENSE.md'
       - 'README.md'
   pull_request:
-    branches: [ main ]
+    branches:
+      - 'main'
+      - 'dev'
     paths-ignore:
       - 'devResources/**'
       - 'docker-compose.yml'
