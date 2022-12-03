@@ -1,21 +1,21 @@
 ---
 version: "3.7"
 services:
-  kasm:
+  ubuntu-vnc-xfce-g3:
     build: .
-    image: ghcr.io/capsulecorplab/ltc-workspace-image:main
+    image: ghcr.io/capsulecorplab/ltc-workspace-image:dev
     ports:
-      - "6901:6901"
+      - "5901:5901"
+    user: "headless"
     environment:
       VNC_PW: password
     shm_size: '512m'
     stdin_open: true # docker run -i
     tty: true        # docker run -t
-    network_mode: bridge
-    volumes:
-      - type: bind
-        source: ./kasm_user
-        target: /home/kasm-user
+#    volumes:
+#      - type: bind
+#        source: ./persistence-layer
+#        target: /home/headless
     security_opt:
       - seccomp=unconfined
 ...
