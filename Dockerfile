@@ -8,8 +8,8 @@ RUN apt update
 
 # set environment variables for $HOME, $STARTUPDIR, and $INST_SCRIPTS
 ENV HOME /home/headless
-ENV STARTUPDIR /dockerstartup
-ENV INST_SCRIPTS $STARTUPDIR/install
+#ENV STARTUPDIR /dockerstartup
+#ENV INST_SCRIPTS $STARTUPDIR/install
 
 ######### Customize Container Here ###########
 
@@ -43,6 +43,6 @@ RUN apt clean autoclean && apt autoremove -y && rm -rf /var/lib/{apt,dpkg,cache,
 
 # set permissions
 #RUN chown 1001:0 $HOME
-RUN $STARTUPDIR/set_user_permission.sh $HOME
+#RUN $STARTUPDIR/set_user_permission.sh $HOME
 
 USER 1001
