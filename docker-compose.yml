@@ -15,7 +15,7 @@ services:
     volumes:
       - type: bind
         source: ./persistence-layer
-        target: /home/headless
+        target: /home/headless/shared
     security_opt:
       - seccomp=unconfined
 ...
