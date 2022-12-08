@@ -46,3 +46,4 @@ RUN apt clean autoclean && apt autoremove -y && rm -rf /var/lib/{apt,dpkg,cache,
 #RUN $STARTUPDIR/set_user_permission.sh $HOME
 
 USER 1001
+ENTRYPOINT [ "/usr/bin/tini", "--", "tail", "-f", "/dev/null" ]
