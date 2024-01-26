@@ -1,5 +1,8 @@
 # LearnTeachCode Workspace (Kasm Image)
 
+![Screenshot of ltc-workspace-image with fairy penquin wallpaper](./screenshot-of-ltc-workspace-image-with-fairy-penguin-wallpaper.png)
+[Fairy penguins](https://www.flickr.com/photos/mckernanlive/4458440045/) (wallpaper) image by Kevin McKernan [CC-BY-NC 2.0](https://creativecommons.org/licenses/by-nc/2.0/).
+
 ## Introduction
 
 This repo provides a workspace for the [LearnTeachCode resource page](https://github.com/LearnTeachCode/code-coffee-compendium/) based on the [Ansible based template for KASM Ubuntu Focal Images](https://github.com/j-simmons-phd/kasm-core-focal-template) template provided by @j-simmons-phd.  The workspace is configured with the following software:

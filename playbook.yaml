@@ -51,14 +51,51 @@
 # Add additional plays here (remember the list entry -)
 # Be sure to use the same hosts and connection entries above
 # addtional plays
+
 -
   # install chrome
   hosts: localhost
   connection: local
   gather_facts: yes
+  tags:
+    - install_chrome
 
   roles:
     - role: webarchitect609.google_chrome
+
+-
+  # install firefox
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+  tags:
+    - install_firefox
+
+  vars:
+    firefox_profiles:
+      default:
+        extensions:
+          - ublock-origin
+        preferences:
+          network.cookie.cookieBehavior: 1
+          privacy.donottrackheader.enabled: true
+          datareporting.healthreport.uploadEnabled: false
+      secondprofile:
+        extensions:
+          - adblock-plus
+        preferences:
+          privacy.donottrackheader.enabled: false
+          privacy.trackingprotection.enabled: false
+          signon.rememberSignons: false
+          datareporting.healthreport.uploadEnabled: false
+
+  pre_tasks:
+  - name: Update apt packages
+    apt:
+      update_cache: yes
+
+  roles:
+    - role: staticdev.firefox
 
 -
   # install keychain, git, and @capsulecorplab .vimrc and .gitconfig
