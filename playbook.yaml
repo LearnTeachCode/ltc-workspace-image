@@ -40,6 +40,12 @@
     lineinfile:
       path: "/etc/skel/.profile"
       line: 'export PS1="\[\033[00;32m\][\w]\$\[\033[00m\] "'
+  - name: Get disk usage
+    shell: df -h
+    register: disk_usage
+  - name: Display disk usage
+    debug:
+      msg: "{{ disk_usage.stdout }}"
 
   # Handlers: the list of handlers that are executed as a notify 
   #           key from a task
@@ -59,6 +65,14 @@
   gather_facts: yes
   tags:
     - install_chrome
+
+  tasks:
+  - name: Get disk usage
+    shell: df -h
+    register: disk_usage
+  - name: Display disk usage
+    debug:
+      msg: "{{ disk_usage.stdout }}"
 
   roles:
     - role: webarchitect609.google_chrome
@@ -88,6 +102,14 @@
           privacy.trackingprotection.enabled: false
           signon.rememberSignons: false
           datareporting.healthreport.uploadEnabled: false
+
+  tasks:
+  - name: Get disk usage
+    shell: df -h
+    register: disk_usage
+  - name: Display disk usage
+    debug:
+      msg: "{{ disk_usage.stdout }}"
 
   pre_tasks:
   - name: Update apt packages
@@ -156,6 +178,12 @@
     get_url:
       url: https://gist.githubusercontent.com/capsulecorplab/401ba2fe0857a328f2a626adbf078cc6/raw/b89a6234f0d620ff60bcfe37f95de197b8772377/.gitconfig
       dest: /home/kasm-default-profile/
+  - name: Get disk usage
+    shell: df -h
+    register: disk_usage
+  - name: Display disk usage
+    debug:
+      msg: "{{ disk_usage.stdout }}"
 
 -
   # install Python packages with pip
@@ -179,6 +207,12 @@
         - notebook
         - voila
         - pint
+  - name: Get disk usage
+    shell: df -h
+    register: disk_usage
+  - name: Display disk usage
+    debug:
+      msg: "{{ disk_usage.stdout }}"
 
 -
   # Install NodeJS Tools
@@ -263,6 +297,12 @@
     fail:
       msg: "cli-njk Version Error: Expected {{ cli_njk_version }} | Found {{ installed_cli_njk_version.stdout }}"
     when: installed_cli_njk_version.stdout != cli_njk_version
+  - name: Get disk usage
+    shell: df -h
+    register: disk_usage
+  - name: Display disk usage
+    debug:
+      msg: "{{ disk_usage.stdout }}"
 
   roles:
   - role: grzegorznowak.nvm_node
@@ -284,6 +324,7 @@
   # install sudo for the vs-code role below 
   hosts: localhost
   connection: local
+
   tasks:
   - name: Install Sudo
     apt:
@@ -294,16 +335,29 @@
       path: "/etc/sudoers"
       line: "Defaults        env_keep += \"DONT_PROMPT_WSL_INSTALL\""
     when: wsl2_environment
+  - name: Get disk usage
+    shell: df -h
+    register: disk_usage
+  - name: Display disk usage
+    debug:
+      msg: "{{ disk_usage.stdout }}"
 
 -
 # add dev user to give vs code somewhere to install extensions
   hosts: localhost
   connection: local
+
   tasks:
   - name: Add dev user
     user:
       name: dev
       uid: 1001
+  - name: Get disk usage
+    shell: df -h
+    register: disk_usage
+  - name: Display disk usage
+    debug:
+      msg: "{{ disk_usage.stdout }}"
 
 -
   # install the remainder of the tools
@@ -311,6 +365,15 @@
   connection: local
   environment: 
     DONT_PROMPT_WSL_INSTALL: 1
+
+  tasks:
+  - name: Get disk usage
+    shell: df -h
+    register: disk_usage
+  - name: Display disk usage
+    debug:
+      msg: "{{ disk_usage.stdout }}"
+
   roles:
     - role: gantsign.visual-studio-code
       users:
@@ -347,6 +410,12 @@
       name: dev
       state: absent
       remove: yes 
+  - name: Get disk usage
+    shell: df -h
+    register: disk_usage
+  - name: Display disk usage
+    debug:
+      msg: "{{ disk_usage.stdout }}"
 
 # Three dots indicate the end of a YAML document
 ...
