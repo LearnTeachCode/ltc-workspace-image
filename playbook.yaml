@@ -40,6 +40,12 @@
     lineinfile:
       path: "/etc/skel/.profile"
       line: 'export PS1="\[\033[00;32m\][\w]\$\[\033[00m\] "'
+  - name: Get disk usage
+    shell: df -h
+    register: disk_usage
+  - name: Display disk usage
+    debug:
+      msg: "{{ disk_usage.stdout }}"
 
   # Handlers: the list of handlers that are executed as a notify 
   #           key from a task
@@ -59,6 +65,14 @@
   gather_facts: yes
   tags:
     - install_chrome
+
+  tasks:
+  - name: Get disk usage
+    shell: df -h
+    register: disk_usage
+  - name: Display disk usage
+    debug:
+      msg: "{{ disk_usage.stdout }}"
 
   roles:
     - role: webarchitect609.google_chrome
@@ -89,6 +103,14 @@
           signon.rememberSignons: false
           datareporting.healthreport.uploadEnabled: false
 
+  tasks:
+  - name: Get disk usage
+    shell: df -h
+    register: disk_usage
+  - name: Display disk usage
+    debug:
+      msg: "{{ disk_usage.stdout }}"
+
   pre_tasks:
   - name: Update apt packages
     apt:
@@ -105,55 +127,29 @@
   tags: install_utilities
 
   vars:
-    git_version: "2.38.1"
-    git_version_to_install: "1:{{ git_version }}-0ppa1~ubuntu20.04.1"
+    git_version: "2.34.1"
+    git_version_to_install: "1:{{ git_version }}-0ppa1~ubuntu22.04.1"
     keychain_version: "2.8.5"
-    keychain_version_to_install: "{{ keychain_version }}-1"
+    keychain_version_to_install: "{{ keychain_version }}-2"
     keychain_version_expected: "{{ keychain_version }}.."
 
   tasks:
-  - name: Install dh-autoreconf
+  - name: Add git PPA
+    shell: add-apt-repository ppa:git-core/ppa
+  - name: Install git
     apt:
-      name: dh-autoreconf
-      update_cache: yes
-  - name: Install libcurl4-gnutls-dev
+      name: git
+  - name: Install Git Bash Completion
     apt:
-      name: libcurl4-gnutls-dev
+      name: bash-completion
       update_cache: yes
-  - name: Install libexpat1-dev
-    apt:
-      name: libexpat1-dev
-      update_cache: yes
-  - name: Install gettext
-    apt:
-      name: gettext
-      update_cache: yes
-  - name: Install libz-dev
-    apt:
-      name: libz-dev
-      update_cache: yes
-  - name: Install libssl-dev
-    apt:
-      name: libssl-dev
-      update_cache: yes
-  - name: Install install-info
-    apt:
-      name: install-info
-      update_cache: yes
-  - name: Extract git source files
-    unarchive:
-      src: /home/kasm-default-profile/install_files/git-2.38.1.tar.gz
-      dest: /home/kasm-default-profile/install_files/
-      remote_src: yes
-      creates: /home/kasm-default-profile/install_files/git-2.38.1/README.md
-  - name: Build git
-    shell:
-      cmd: make configure && ./configure --prefix=/usr && make > /tmp/git_build_output.txt 2>&1 && make install
-      chdir: /home/kasm-default-profile/install_files/git-2.38.1
-      executable: /bin/bash
   - name: Install Keychain
     apt:
       name: "keychain={{ keychain_version_to_install }}"
+      update_cache: yes
+  - name: install ping
+    apt:
+      name: iputils-ping
       update_cache: yes
   - name: Get git version
     shell: git version | sed 's/[[:alpha:]|(|[:space:]]//g'
@@ -182,6 +178,12 @@
     get_url:
       url: https://gist.githubusercontent.com/capsulecorplab/401ba2fe0857a328f2a626adbf078cc6/raw/b89a6234f0d620ff60bcfe37f95de197b8772377/.gitconfig
       dest: /home/kasm-default-profile/
+  - name: Get disk usage
+    shell: df -h
+    register: disk_usage
+  - name: Display disk usage
+    debug:
+      msg: "{{ disk_usage.stdout }}"
 
 -
   # install Python packages with pip
@@ -205,11 +207,124 @@
         - notebook
         - voila
         - pint
+  - name: Get disk usage
+    shell: df -h
+    register: disk_usage
+  - name: Display disk usage
+    debug:
+      msg: "{{ disk_usage.stdout }}"
+
+-
+  # Install NodeJS Tools
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+  tags:
+  - install_node
+  - install_doctools
+
+  vars:
+    node_version: "20.11.1"
+    v_node_version: "v{{ node_version }}"
+    npm_version: "10.2.4"
+    npx_version: "10.2.4"
+    yarn_version: "3.5.0"
+    yo_version: "4.3.1"
+    generator_code_version: "1.7.5"
+    oclif_version: "4.3.6"
+    typescript_version: "5.1.3"
+    cli_njk_version: "1.0.0"
+
+  tasks:   # Test Node JS Tools versions
+  - name: Install Yarn
+    shell: "corepack enable && corepack prepare yarn@{{ yarn_version }} --activate"
+  - name: Get node version
+    shell: node --version
+    register: installed_node_version
+  - name: Get npm version
+    shell: npm --version
+    register: installed_npm_version
+  - name: Get npx installed version
+    shell: npx --version
+    register: installed_npx_version
+  - name: Get yarn version
+    shell: yarn --version
+    register: installed_yarn_version
+  - name: Get oclif version
+    shell: oclif --version 2>/dev/null | sed 's/\ /\n/g' | grep oclif | sed 's/\///g' | sed 's/[[:alpha:]|(|[:space:]]//g'
+    register: installed_oclif_version
+  - name: Get TypeScript Compiler version
+    shell: tsc --version | sed 's/[[:alpha:]|(|[:space:]]//g'
+    register: installed_tsc_version
+  - name: Get cli-njk version
+    shell: njk --version
+    register: installed_cli_njk_version
+  - name: Display node tool versions
+    debug:
+      msg: "Node = {{ installed_node_version.stdout }} | npm = {{ installed_npm_version.stdout }} | npx = {{ installed_npx_version.stdout }} | yarn = {{ installed_yarn_version.stdout }}"
+  - name: Display TypeScript Compiler version
+    debug:
+      msg: "tsc = {{ installed_tsc_version.stdout }}"
+  - name: Display cli-njk version
+    debug:
+      msg: "cli-njk = {{ installed_cli_njk_version.stdout }}"
+  - name: Test node version
+    fail:
+      msg: "NodeJS Version Error: Expected {{ v_node_version }} | Found {{ installed_node_version.stdout }}"
+    when: installed_node_version.stdout != v_node_version
+  - name: Test npm version
+    fail:
+      msg: "NPM Version Error: Expected {{ npm_version }} | Found {{ installed_npm_version.stdout }}"
+    when: installed_npm_version.stdout != npm_version
+  - name: Test npx version
+    fail:
+      msg: "NPX Version Error: Expected {{ npx_version }} | Found {{ installed_npx_version.stdout }}"
+    when: installed_npx_version.stdout != npx_version
+  - name: Test yarn version
+    fail:
+      msg: "Yarn Version Error: Expected {{ yarn_version }} | Found {{ installed_yarn_version.stdout }}"
+    when: installed_yarn_version.stdout != yarn_version
+  - name: Test oclif version
+    fail:
+      msg: "oclif Version Error: Expected {{ oclif_version }} | Found {{ installed_oclif_version.stdout }}"
+    when: installed_oclif_version.stdout != oclif_version
+    when: installed_yarn_version.stdout != yarn_version
+  - name: Test TypeScript Compiler version
+    fail:
+      msg: "TypeScript Compiler Version Error: Expected {{ typescript_version }} | Found {{ installed_tsc_version.stdout }}"
+    when: installed_tsc_version.stdout != typescript_version
+  - name: Test cli-njk version
+    fail:
+      msg: "cli-njk Version Error: Expected {{ cli_njk_version }} | Found {{ installed_cli_njk_version.stdout }}"
+    when: installed_cli_njk_version.stdout != cli_njk_version
+  - name: Get disk usage
+    shell: df -h
+    register: disk_usage
+  - name: Display disk usage
+    debug:
+      msg: "{{ disk_usage.stdout }}"
+
+  roles:
+  - role: grzegorznowak.nvm_node
+    nvm_install_script_version: "0.39.3"
+    nvm_node_version: "{{ node_version }}"
+    nvm_install_globally:
+    - name: yo
+      version: "{{ yo_version }}"
+    - name: generator-code
+      version: "{{ generator_code_version }}"
+    - name: oclif
+      version: "{{ oclif_version }}"
+    - name: typescript
+      version: "{{ typescript_version }}"
+    - name: cli-njk
+      version: "{{ cli_njk_version }}"
 
 - 
   # install sudo for the vs-code role below 
   hosts: localhost
   connection: local
+
   tasks:
   - name: Install Sudo
     apt:
@@ -220,16 +335,29 @@
       path: "/etc/sudoers"
       line: "Defaults        env_keep += \"DONT_PROMPT_WSL_INSTALL\""
     when: wsl2_environment
+  - name: Get disk usage
+    shell: df -h
+    register: disk_usage
+  - name: Display disk usage
+    debug:
+      msg: "{{ disk_usage.stdout }}"
 
 -
 # add dev user to give vs code somewhere to install extensions
   hosts: localhost
   connection: local
+
   tasks:
   - name: Add dev user
     user:
       name: dev
       uid: 1001
+  - name: Get disk usage
+    shell: df -h
+    register: disk_usage
+  - name: Display disk usage
+    debug:
+      msg: "{{ disk_usage.stdout }}"
 
 -
   # install the remainder of the tools
@@ -237,6 +365,15 @@
   connection: local
   environment: 
     DONT_PROMPT_WSL_INSTALL: 1
+
+  tasks:
+  - name: Get disk usage
+    shell: df -h
+    register: disk_usage
+  - name: Display disk usage
+    debug:
+      msg: "{{ disk_usage.stdout }}"
+
   roles:
     - role: gantsign.visual-studio-code
       users:
@@ -273,27 +410,12 @@
       name: dev
       state: absent
       remove: yes 
-
--
-  hosts: localhost
-  connection: local
-
-  tasks:
-  - name: Download source setup
-    get_url:
-      url: https://deb.nodesource.com/setup_17.x
-      dest: /root/nodesource_setup.sh
-      mode: 0700
-
-  - name: Set Node source in apt
-    shell:
-      cmd: /root/nodesource_setup.sh
-      executable: /bin/bash
-
-  - name: Apt install NodeJS
-    apt:
-      name: nodejs
-      update_cache: yes
+  - name: Get disk usage
+    shell: df -h
+    register: disk_usage
+  - name: Display disk usage
+    debug:
+      msg: "{{ disk_usage.stdout }}"
 
 # Three dots indicate the end of a YAML document
 ...

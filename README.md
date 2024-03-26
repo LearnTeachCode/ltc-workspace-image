@@ -5,11 +5,19 @@
 
 ## Introduction
 
-This repo provides a workspace for the [LearnTeachCode resource page](https://github.com/LearnTeachCode/code-coffee-compendium/) based on the [Ansible based template for KASM Ubuntu Focal Images](https://github.com/j-simmons-phd/kasm-core-focal-template) template provided by @j-simmons-phd.  The workspace is configured with the following software:
+This repo provides a workspace for the [LearnTeachCode resource page](https://github.com/LearnTeachCode/code-coffee-compendium/) based on the Ansible template for [KASM Ubuntu Jammy Images](https://hub.docker.com/r/kasmweb/core-ubuntu-jammy), template originally provided by @j-simmons-phd.  The workspace is configured with the following software:
 
-- git cli
-- [Keychain](https://www.funtoo.org/Keychain)
-- Chrome
+- Node JS Tools
+    - nodejs v20.11.1
+    - npm v10.2.4 (included with nodejs)
+    - npx v10.2.4 (included with nodejs)
+    - yarn v3.5.0
+    - oclif v3.10.0
+    - [cli-njk](https://github.com/elcharitas/cli-njk) v1.0.0
+- Utilities
+    - git v2.34.1 with @capsulecorplab .gitconfig
+    - [Keychain](https://www.funtoo.org/Keychain) v2.8.5
+    - Vim (pre-installed) with @capsulecorplab [vimrc](https://gist.github.com/capsulecorplab/495058e7a57ed8adaed3c40c80d09739#file-vimrc)
 - Python 3.8.x (part of the image template) with the following packages (not part of the image template)
     - pip
     - [JupyterLab](https://jupyter.org/)
@@ -20,6 +28,9 @@ This repo provides a workspace for the [LearnTeachCode resource page](https://gi
     - [Python extension by Microsoft](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
     - [Dendron](https://marketplace.visualstudio.com/items?itemName=dendron.dendron)
     - [Foam](https://marketplace.visualstudio.com/items?itemName=foam.foam-vscode)
+- Content Viewers
+    - Chrome
+    - Firefox
 
 ## How to Use this Repo
 
