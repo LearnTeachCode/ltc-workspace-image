@@ -151,6 +151,10 @@
     apt:
       name: iputils-ping
       update_cache: yes
+  - name: Install nix # as per https://nixos.org/download/#download-nix
+    shell:
+      cmd: sh <(curl -L https://nixos.org/nix/install) --daemon
+      executable: /bin/bash
   - name: Get git version
     shell: git version | sed 's/[[:alpha:]|(|[:space:]]//g'
     register: installed_git_version
