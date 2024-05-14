@@ -155,6 +155,13 @@
     shell:
       cmd: sh <(curl -L https://nixos.org/nix/install) --daemon
       executable: /bin/bash
+    register: output_of_nix_install
+  - name: Display stdout of nix install
+    debug:
+      msg: "{{ output_of_nix_install.stdout }}"
+  - name: Display stderr of nix install
+    debug:
+      msg: "{{ output_of_nix_install.stderr }}"
   - name: Get git version
     shell: git version | sed 's/[[:alpha:]|(|[:space:]]//g'
     register: installed_git_version
