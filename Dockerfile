@@ -20,7 +20,7 @@ COPY ./requirements.yaml ./playbook.yaml ./
 RUN ansible-galaxy install -r requirements.yaml && ansible-playbook -i,localhost playbook.yaml --tags "all" && rm -f ./*.yaml
 
 # Custom Desktop Background - replace bg_custom.png on disk with your own background image
-COPY ./bg_fairy_penguin_1920x960.png /usr/share/backgrounds/bg_default.png
+COPY ./bg_fairy_penguins_1600x800.png /usr/share/backgrounds/bg_default.png
 
 # Create .profile and set XFCE terminal to use it
 RUN cp /etc/skel/.profile $HOME/.profile && mkdir $HOME/.config/xfce4/terminal/
