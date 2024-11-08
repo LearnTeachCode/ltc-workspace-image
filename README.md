@@ -13,7 +13,6 @@ This repo provides a workspace for the [LearnTeachCode resource page](https://gi
     - npx v10.7.0 (included with nodejs)
     - yarn v4.3.1
     - oclif v4.14.6
-    - [cli-njk](https://github.com/elcharitas/cli-njk) v1.0.0
 - Utilities
     - git v2.43.0 with @capsulecorplab .gitconfig
     - [Keychain](https://www.funtoo.org/Keychain) v2.8.5
