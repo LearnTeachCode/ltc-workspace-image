@@ -1,7 +1,7 @@
 # LearnTeachCode Workspace (Kasm Image)
 
-![Screenshot of ltc-workspace-image with fairy penquin wallpaper](./screenshot-of-ltc-workspace-image-with-fairy-penguin-wallpaper.png)
-[Fairy penguins](https://www.flickr.com/photos/mckernanlive/4458440045/) (wallpaper) image by Kevin McKernan [CC-BY-NC 2.0](https://creativecommons.org/licenses/by-nc/2.0/).
+![Screenshot of ltc-workspace-image with fairy penquins wallpaper](./screenshot-of-ltc-workspace-image-with-fairy-penguins-wallpaper.png)
+[Fairy penguins](https://www.flickr.com/photos/45958245@N00/2802087983) (wallpaper) image by rumpleteaser CC-BY-2.0  [CC-BY-2.0](https://creativecommons.org/licenses/by/2.0/).
 
 ## Introduction
 
