@@ -1,24 +1,23 @@
 # LearnTeachCode Workspace (Kasm Image)
 
-![Screenshot of ltc-workspace-image with fairy penquin wallpaper](./screenshot-of-ltc-workspace-image-with-fairy-penguin-wallpaper.png)
-[Fairy penguins](https://www.flickr.com/photos/mckernanlive/4458440045/) (wallpaper) image by Kevin McKernan [CC-BY-NC 2.0](https://creativecommons.org/licenses/by-nc/2.0/).
+![Screenshot of ltc-workspace-image with fairy penquins wallpaper](./screenshot-of-ltc-workspace-image-with-fairy-penguins-wallpaper.png)
+[Fairy penguins](https://www.flickr.com/photos/45958245@N00/2802087983) (wallpaper) image by rumpleteaser CC-BY-2.0  [CC-BY-2.0](https://creativecommons.org/licenses/by/2.0/).
 
 ## Introduction
 
 This repo provides a workspace for the [LearnTeachCode resource page](https://github.com/LearnTeachCode/code-coffee-compendium/) based on the Ansible template for [KASM Ubuntu Jammy Images](https://hub.docker.com/r/kasmweb/core-ubuntu-jammy), template originally provided by @j-simmons-phd.  The workspace is configured with the following software:
 
 - Node JS Tools
-    - nodejs v20.11.1
-    - npm v10.2.4 (included with nodejs)
-    - npx v10.2.4 (included with nodejs)
-    - yarn v3.5.0
-    - oclif v3.10.0
-    - [cli-njk](https://github.com/elcharitas/cli-njk) v1.0.0
+    - nodejs v20.15.1
+    - npm v10.7.0 (included with nodejs)
+    - npx v10.7.0 (included with nodejs)
+    - yarn v4.3.1
+    - oclif v4.14.6
 - Utilities
-    - git v2.34.1 with @capsulecorplab .gitconfig
+    - git v2.43.0 with @capsulecorplab .gitconfig
     - [Keychain](https://www.funtoo.org/Keychain) v2.8.5
     - Vim (pre-installed) with @capsulecorplab [vimrc](https://gist.github.com/capsulecorplab/495058e7a57ed8adaed3c40c80d09739#file-vimrc)
-- Python 3.8.x (part of the image template) with the following packages (not part of the image template)
+- Python 3.12.3 (part of the image template) with the following packages (not part of the image template)
     - pip
     - [JupyterLab](https://jupyter.org/)
     - [Jupyter Notebook](https://jupyter.org/)
