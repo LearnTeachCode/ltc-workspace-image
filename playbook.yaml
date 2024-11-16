@@ -120,6 +120,26 @@
     - role: staticdev.firefox
 
 -
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+  tags:
+  - install_utilities
+  - install_guix
+
+  tasks:
+  - name: Install guix with apt
+    apt:
+      name: guix
+      update_cache: yes
+  - name: Get disk usage
+    shell: df -h
+    register: disk_usage
+  - name: Display disk usage
+    debug:
+      msg: "{{ disk_usage.stdout }}"
+
+-
   # install keychain, git, and @capsulecorplab .vimrc and .gitconfig
   hosts: localhost
   connection: local
