@@ -132,6 +132,8 @@
     apt:
       name: guix
       update_cache: yes
+  - name: Start guix daemon as background process # https://guix.gnu.org/manual/en/html_node/Build-Environment-Setup.html
+    shell: guix-daemon &
   - name: Get disk usage
     shell: df -h
     register: disk_usage
