@@ -156,7 +156,7 @@
 
   tasks:
   - name: Install git with guix
-    shell: guix install git@{{ git_version }}
+    shell: guix install git
   - name: Install Git Bash Completion
     apt:
       name: bash-completion
