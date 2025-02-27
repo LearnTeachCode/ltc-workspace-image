@@ -134,6 +134,8 @@
       update_cache: yes
   - name: Start guix daemon as background process # https://guix.gnu.org/manual/en/html_node/Build-Environment-Setup.html
     shell: guix-daemon &
+  - name: Fetch guix config dependencies # https://gist.github.com/Frewacom/2de985903d74faf48278c64f0a0a6905
+    shell: guix pull
   - name: Get disk usage
     shell: df -h
     register: disk_usage
