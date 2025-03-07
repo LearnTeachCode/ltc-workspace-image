@@ -17,7 +17,7 @@ RUN apt update && apt -y install software-properties-common && add-apt-repositor
 
 # run Ansible commands
 COPY ./requirements.yaml ./playbook.yaml ./
-RUN ansible-galaxy install -r requirements.yaml && ansible-playbook -i,localhost playbook.yaml --tags "all" && rm -f ./*.yaml
+RUN ansible-galaxy install -r requirements.yaml && ansible-playbook -v -i,localhost playbook.yaml --tags "all" && rm -f ./*.yaml
 
 # Custom Desktop Background - replace bg_custom.png on disk with your own background image
 COPY ./bg_fairy_penguins_1600x800.png /usr/share/backgrounds/bg_default.png
