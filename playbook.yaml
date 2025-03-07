@@ -151,6 +151,10 @@
     apt:
       name: iputils-ping
       update_cache: yes
+  - name: Create /nix directory and set permissions
+    shell:
+      cmd: mkdir -m 0755 /nix && chown root /nix
+      executable: /bin/bash
   - name: Install nix (as single-user) # as per https://nixos.org/download/#download-nix
     shell:
       cmd: sh <(curl -L https://nixos.org/nix/install) --no-daemon
