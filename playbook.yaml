@@ -151,9 +151,9 @@
     apt:
       name: iputils-ping
       update_cache: yes
-  - name: Install nix # as per https://nixos.org/download/#download-nix
+  - name: Install nix (as single-user) # as per https://nixos.org/download/#download-nix
     shell:
-      cmd: sh <(curl -L https://nixos.org/nix/install) --daemon
+      cmd: sh <(curl -L https://nixos.org/nix/install) --no-daemon
       executable: /bin/bash
     register: output_of_nix_install
   - name: Display stdout of nix install
