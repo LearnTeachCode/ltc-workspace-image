@@ -1,10 +1,5 @@
-FROM kasmweb/core-ubuntu-noble:1.16.0
+FROM lscr.io/linuxserver/webtop:ubuntu-mate
 USER root
-
-ENV HOME /home/kasm-default-profile
-ENV STARTUPDIR /dockerstartup
-ENV INST_SCRIPTS $STARTUPDIR/install
-WORKDIR $HOME
 
 ######### Customize Container Here ###########
 
@@ -22,20 +17,9 @@ RUN ansible-galaxy install -r requirements.yaml && ansible-playbook -i,localhost
 # Custom Desktop Background - replace bg_custom.png on disk with your own background image
 COPY ./bg_fairy_penguins_1600x800.png /usr/share/backgrounds/bg_default.png
 
-# Create .profile and set XFCE terminal to use it
-RUN cp /etc/skel/.profile $HOME/.profile && mkdir $HOME/.config/xfce4/terminal/
-COPY ./terminalrc /home/kasm-default-profile/.config/xfce4/terminal/terminalrc
-
 # clean up install_files/
 RUN rm -rf $HOME/install_files/
 
 ######### End Customizations ###########
-
-RUN chown 1000:0 $HOME
-RUN $STARTUPDIR/set_user_permission.sh $HOME
-
-ENV HOME /home/kasm-user
-WORKDIR $HOME
-RUN mkdir -p $HOME && chown -R 1000:0 $HOME
 
 USER 1000
