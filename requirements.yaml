@@ -5,4 +5,5 @@
 - webarchitect609.google_chrome       # https://galaxy.ansible.com/webarchitect609/google_chrome
 - staticdev.firefox                   # https://galaxy.ansible.com/staticdev/firefox
 - gantsign.visual-studio-code         # https://galaxy.ansible.com/gantsign/visual-studio-code
+- provizanta.nix                      # https://galaxy.ansible.com/ui/standalone/roles/provizanta/nix
 ...

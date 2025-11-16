@@ -151,35 +151,6 @@
     apt:
       name: iputils-ping
       update_cache: yes
-  - name: Create /nix directory and set permissions
-    shell:
-      cmd: mkdir -m 0755 /nix && chown root /nix
-      executable: /bin/bash
-  - name: Download nix-installer # as https://zero-to-nix.com/start/install/
-    shell:
-      cmd: curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix > nix-installer.sh
-      chdir: /home/kasm-default-profile/install_files
-      executable: /bin/bash
-  - name: Make nix-installer executable
-    shell:
-      cmd: chmod +x nix-installer.sh
-      chdir: /home/kasm-default-profile/install_files
-      executable: /bin/bash
-  - name: Install nix using nix-installer
-    shell:
-      cmd: ./nix-installer.sh install --no-confirm
-      chdir: /home/kasm-default-profile/install_files
-      executable: /bin/bash
-    register: output_of_nix_install
-  - name: Display stdout of nix install
-    debug:
-      msg: "{{ output_of_nix_install.stdout }}"
-  - name: Display stderr of nix install
-    debug:
-      msg: "{{ output_of_nix_install.stderr }}"
-  - name: Get git version
-    shell: git version | sed 's/[[:alpha:]|(|[:space:]]//g'
-    register: installed_git_version
   - name: Get keychain version
     shell:
       cmd: keychain -V 2> >(grep -i keychain) 2> >(sed 's/[[:alpha:]|(|[:space:]]//g') | fgrep '*' | sed 's/[*~://]//g'
@@ -210,6 +181,9 @@
   - name: Display disk usage
     debug:
       msg: "{{ disk_usage.stdout }}"
+
+  roles:
+    - role: nix
 
 -
   # install Python packages with pip
