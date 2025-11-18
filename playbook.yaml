@@ -120,7 +120,7 @@
     - role: staticdev.firefox
 
 -
-  # install keychain, git, and @capsulecorplab .vimrc and .gitconfig
+  # install keychain, git, nix, and @capsulecorplab .vimrc and .gitconfig
   hosts: localhost
   connection: local
   gather_facts: yes
@@ -146,6 +146,10 @@
   - name: Install Keychain
     apt:
       name: "keychain={{ keychain_version_to_install }}"
+      update_cache: yes
+  - name: Install nix-bin # see https://moonpiedumplings.github.io/projects/setting-up-kasm/#customized-kasm-images
+    apt:
+      name: nix-bin
       update_cache: yes
   - name: install ping
     apt:
@@ -181,9 +185,6 @@
   - name: Display disk usage
     debug:
       msg: "{{ disk_usage.stdout }}"
-
-  roles:
-    - role: nix
 
 -
   # install Python packages with pip
