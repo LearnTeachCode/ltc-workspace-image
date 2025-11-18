@@ -134,11 +134,12 @@
     keychain_version_expected: "{{ keychain_version }}.."
 
   tasks:
-  - name: Add git PPA
-    shell: add-apt-repository ppa:git-core/ppa
-  - name: Install git
+  - name: Install nix-bin # see https://moonpiedumplings.github.io/projects/setting-up-kasm/#customized-kasm-images
     apt:
-      name: git
+      name: nix-bin
+      update_cache: yes
+  - name: Install git with nix
+    shell: nix profile install nixpkgs#git --extra-experimental-features nix-command
   - name: Install Git Bash Completion
     apt:
       name: bash-completion
@@ -146,10 +147,6 @@
   - name: Install Keychain
     apt:
       name: "keychain={{ keychain_version_to_install }}"
-      update_cache: yes
-  - name: Install nix-bin # see https://moonpiedumplings.github.io/projects/setting-up-kasm/#customized-kasm-images
-    apt:
-      name: nix-bin
       update_cache: yes
   - name: install ping
     apt:
