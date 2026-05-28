@@ -19,9 +19,6 @@ This repo provides a workspace for the [LearnTeachCode resource page](https://gi
     - Vim (pre-installed) with @capsulecorplab [vimrc](https://gist.github.com/capsulecorplab/495058e7a57ed8adaed3c40c80d09739#file-vimrc)
 - Python 3.12.3 (part of the image template) with the following packages (not part of the image template)
     - pip
-    - [JupyterLab](https://jupyter.org/)
-    - [Jupyter Notebook](https://jupyter.org/)
-    - [Voilà](https://voila.readthedocs.io/en/stable/index.html)
     - [Pint](https://pint.readthedocs.io/en/stable/)
 - VS Code with the following extensions (note, auto-updates are disabled)
     - [Python extension by Microsoft](https://marketplace.visualstudio.com/items?itemName=ms-python.python)

@@ -165,9 +165,6 @@
     pip:
       break_system_packages: true
       name:
-        - jupyterlab
-        - notebook
-        - voila
         - pint
   - name: Get disk usage
     shell: df -h
