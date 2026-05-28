@@ -86,7 +86,7 @@
 
   vars:
     git_version: "2.43.0"
-    git_version_to_install: "1:{{ git_version }}-1ubuntu7"
+    nixos_release: "26.05"
     keychain_version: "2.8.5"
     keychain_version_to_install: "{{ keychain_version }}-4"
     keychain_version_expected: "{{ keychain_version }}.."
@@ -98,8 +98,8 @@
       update_cache: yes
   - name: Add kasm-user to nix-users group
     shell: usermod -aG nix-users kasm-user
-  - name: Install git with nix
-    shell: nix profile install nixpkgs#git --extra-experimental-features nix-command --extra-experimental-features flakes
+  - name: Install git {{ git_version }} with nix
+    shell: nix profile install nixpkgs/release-{{ nixos_release }}#git --extra-experimental-features nix-command --extra-experimental-features flakes
   - name: Install Git Bash Completion
     apt:
       name: bash-completion
