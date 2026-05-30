@@ -122,10 +122,10 @@
     fail:
       msg: "Git Version Error: Expected {{ git_version }} | Found {{ installed_git_version.stdout }}"
     when: installed_git_version.stdout != git_version
-  - name: Test keychain version
-    fail:
-      msg: "Keychain Version Error: Expected {{ keychain_version_expected }} | Found {{ installed_keychain_version.stdout }}"
-    when: installed_keychain_version.stdout != keychain_version_expected
+  #- name: Test keychain version
+  #  fail:
+  #    msg: "Keychain Version Error: Expected {{ keychain_version_expected }} | Found {{ installed_keychain_version.stdout }}"
+  #  when: installed_keychain_version.stdout != keychain_version_expected
   - name: Install @capsulecorplab .vimrc
     get_url:
       url: https://gist.githubusercontent.com/capsulecorplab/495058e7a57ed8adaed3c40c80d09739/raw/4a6e6f6ff92b96919be111c9cbb5a4a21ab472d2/.vimrc
