@@ -159,6 +159,7 @@
       break_system_packages: true
       name:
         - pint
+        - voila
   - name: Get disk usage
     shell: df -h
     register: disk_usage
