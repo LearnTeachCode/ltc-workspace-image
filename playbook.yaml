@@ -166,6 +166,7 @@
         - voila
         - notebook==6.5.7
         - jupyterlab==3.6.8
+      extra_args: --ignore-installed
   - name: Get disk usage
     shell: df -h
     register: disk_usage
