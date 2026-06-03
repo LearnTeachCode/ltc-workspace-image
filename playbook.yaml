@@ -164,6 +164,8 @@
       name:
         - pint
         - voila
+        - notebook==6.5.7
+        - jupyterlab==3.6.8
   - name: Get disk usage
     shell: df -h
     register: disk_usage
