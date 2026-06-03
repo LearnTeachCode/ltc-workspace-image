@@ -82,7 +82,9 @@
   hosts: localhost
   connection: local
   gather_facts: yes
-  tags: install_utilities
+  tags:
+  - install_utilities
+  - install_python_packages
 
   vars:
     git_version: "2.43.0"
@@ -144,6 +146,8 @@
   hosts: localhost
   connection: local
   gather_facts: yes
+  tags:
+  - install_python_packages
 
   tasks:
   - name: Update OS to point python to python3
