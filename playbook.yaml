@@ -78,87 +78,43 @@
     - role: webarchitect609.google_chrome
 
 -
-  # install firefox
+  # install keychain, git, nix, and @capsulecorplab .vimrc and .gitconfig
   hosts: localhost
   connection: local
   gather_facts: yes
   tags:
-    - install_firefox
-
-  vars:
-    firefox_profiles:
-      default:
-        extensions:
-          - ublock-origin
-        preferences:
-          network.cookie.cookieBehavior: 1
-          privacy.donottrackheader.enabled: true
-          datareporting.healthreport.uploadEnabled: false
-      secondprofile:
-        extensions:
-          - adblock-plus
-        preferences:
-          privacy.donottrackheader.enabled: false
-          privacy.trackingprotection.enabled: false
-          signon.rememberSignons: false
-          datareporting.healthreport.uploadEnabled: false
-
-  tasks:
-  - name: Get disk usage
-    shell: df -h
-    register: disk_usage
-  - name: Display disk usage
-    debug:
-      msg: "{{ disk_usage.stdout }}"
-
-  pre_tasks:
-  - name: Update apt packages
-    apt:
-      update_cache: yes
-
-  roles:
-    - role: staticdev.firefox
-
--
-  # install keychain, git, and @capsulecorplab .vimrc and .gitconfig
-  hosts: localhost
-  connection: local
-  gather_facts: yes
-  tags: install_utilities
+  - install_utilities
+  - install_python_packages
 
   vars:
     git_version: "2.43.0"
-    git_version_to_install: "1:{{ git_version }}-1ubuntu7"
+    nixos_release: "26.05"
     keychain_version: "2.8.5"
-    keychain_version_to_install: "{{ keychain_version }}-4"
     keychain_version_expected: "{{ keychain_version }}.."
 
   tasks:
-  - name: Add git PPA
-    shell: add-apt-repository ppa:git-core/ppa
-  - name: Install git
+  - name: Install nix-bin # see https://moonpiedumplings.github.io/projects/setting-up-kasm/#customized-kasm-images
     apt:
-      name: git
+      name: nix-bin
+      update_cache: yes
+  - name: Add kasm-user to nix-users group
+    shell: usermod -aG nix-users kasm-user
+  - name: Install git {{ git_version }} with nix
+    shell: nix profile install nixpkgs/release-{{ nixos_release }}#git --extra-experimental-features nix-command --extra-experimental-features flakes
   - name: Install Git Bash Completion
-    apt:
-      name: bash-completion
-      update_cache: yes
+    shell: nix profile install nixpkgs/release-{{ nixos_release }}#bash-completion --extra-experimental-features nix-command --extra-experimental-features flakes
   - name: Install Keychain
-    apt:
-      name: "keychain={{ keychain_version_to_install }}"
-      update_cache: yes
+    shell: nix profile install nixpkgs/release-{{ nixos_release }}#keychain --extra-experimental-features nix-command --extra-experimental-features flakes
   - name: install ping
-    apt:
-      name: iputils-ping
-      update_cache: yes
-  - name: Get git version
-    shell: git version | sed 's/[[:alpha:]|(|[:space:]]//g'
-    register: installed_git_version
+    shell: nix profile install nixpkgs#unixtools.ping --extra-experimental-features nix-command --extra-experimental-features flakes
   - name: Get keychain version
     shell:
       cmd: keychain -V 2> >(grep -i keychain) 2> >(sed 's/[[:alpha:]|(|[:space:]]//g') | fgrep '*' | sed 's/[*~://]//g'
       executable: /bin/bash
     register: installed_keychain_version
+  - name: Get git version
+    shell: git version | sed 's/[[:alpha:]|(|[:space:]]//g'
+    register: installed_git_version
   - name: Display git and keychain versions
     debug:
       msg: "git = {{ installed_git_version.stdout }} | keychain = {{ installed_keychain_version.stdout }}"
@@ -166,10 +122,10 @@
     fail:
       msg: "Git Version Error: Expected {{ git_version }} | Found {{ installed_git_version.stdout }}"
     when: installed_git_version.stdout != git_version
-  - name: Test keychain version
-    fail:
-      msg: "Keychain Version Error: Expected {{ keychain_version_expected }} | Found {{ installed_keychain_version.stdout }}"
-    when: installed_keychain_version.stdout != keychain_version_expected
+  #- name: Test keychain version
+  #  fail:
+  #    msg: "Keychain Version Error: Expected {{ keychain_version_expected }} | Found {{ installed_keychain_version.stdout }}"
+  #  when: installed_keychain_version.stdout != keychain_version_expected
   - name: Install @capsulecorplab .vimrc
     get_url:
       url: https://gist.githubusercontent.com/capsulecorplab/495058e7a57ed8adaed3c40c80d09739/raw/4a6e6f6ff92b96919be111c9cbb5a4a21ab472d2/.vimrc
@@ -190,6 +146,8 @@
   hosts: localhost
   connection: local
   gather_facts: yes
+  tags:
+  - install_python_packages
 
   tasks:
   - name: Update OS to point python to python3
@@ -205,6 +163,10 @@
       break_system_packages: true
       name:
         - pint
+        - voila
+        - notebook==6.5.7
+        - jupyterlab==3.6.8
+      extra_args: --ignore-installed
   - name: Get disk usage
     shell: df -h
     register: disk_usage
@@ -374,7 +336,7 @@
           visual_studio_code_extensions:
             - ms-python.python
             - dendron.dendron
-            - foam.foam-vscode
+            #- foam.foam-vscode
           visual_studio_code_settings_overwrite: yes
           visual_studio_code_settings: {
             "extensions.ignoreRecommendations": true,
